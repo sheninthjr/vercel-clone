@@ -13,6 +13,7 @@ app.post('/upload', async (req, res) => {
   const url = req.body.url;
   const id = generate();
   await simpleGit().clone(url, `output/${id}`)
+
   res.json({
     id: id
   })
