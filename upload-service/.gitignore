@@ -1,1 +1,18 @@
-node_modules
+# Ignore node_modules directory
+node_modules/
+
+# Ignore logs and other generated files
+logs/
+*.log
+npm-debug.log*
+
+# Ignore environment-specific config files
+.env
+
+# Ignore any compiled code
+dist/
+*.bundle.js
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
