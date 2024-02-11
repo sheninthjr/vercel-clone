@@ -18,3 +18,5 @@ dist/
 Thumbs.db
 
 output/
+
+src/config.ts
