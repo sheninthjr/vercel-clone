@@ -42,3 +42,36 @@ export async function downloadFile(prefix: string) {
     }) || [];
   await Promise.all(files.filter((x) => x !== undefined));
 }
+
+export function copyDist(id: string) {
+  const folderPath = path.join(__dirname, `output/${id}/dist`);
+  const allFiles = getFiles(folderPath);
+  allFiles.forEach(async (data) => {
+    await uploadFile(`dist/${id}/` + data.slice(folderPath.length + 1), data);
+  });
+}
+
+export const getFiles = (filePath: string) => {
+  let res: string[] = [];
+  const allFiles = fs.readdirSync(filePath);
+  allFiles.forEach((data) => {
+    const fullPath = path.join(filePath, data);
+    if (fs.statSync(fullPath).isDirectory()) {
+      res = res.concat(getFiles(fullPath));
+    } else {
+      res.push(fullPath);
+    }
+  });
+  return res;
+};
+
+const uploadFile = (fileName: string, localPath: string) => {
+  const fileContent = fs.readFileSync(localPath);
+  const response = s3
+    .upload({
+      Body: fileContent,
+      Bucket: "vercel-clone",
+      Key: fileName,
+    })
+    .promise();
+};
